@@ -1,0 +1,22 @@
+openai
+langchain
+langchain-openai
+langchain-community
+llama-index
+llama-index-llms-openai-like 
+docx2txt
+pypdf
+transformers
+sentence-transformers
+torch   
+faiss-cpu
+#faiss-gpu
+llama-index-embeddings-huggingface
+llama-index-embeddings-instructor
+Flask>=2.0
+Flask-SocketIO # Optional, for real-time chat capabilities
+paho-mqtt==1.6.1
+serial
+pyserial
+rpi-gpio (RPi.GPIO)
+python-dotenv
