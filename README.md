@@ -1,1 +1,1 @@
-the current script is missing the camera implementation 
+the uploaded script is missing the camera implementation 
