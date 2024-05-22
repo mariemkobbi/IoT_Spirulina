@@ -83,7 +83,7 @@ class DataHandler:
     else:
       Water_Level = levelbassin
       
-    #Camera 
+    #Camera static variable
     brightness = 5
 
     # Create user input string
