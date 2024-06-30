@@ -14,8 +14,6 @@ load_dotenv()
 from ModelHandler import ModelHandler
 
 
-
-
 # Define GPIO pins
 IN1 = 27
 IN2 = 17
@@ -106,6 +104,7 @@ class DataHandler:
         #Receive commands from the LLM model to activate actuators based on it
         print("Message received from topic {}: {}".format(msg.topic, msg.payload.decode()))
         data = json.loads(msg.payload.decode())
+        print(data)
         self.control_actuators(data)
 
 
@@ -147,7 +146,7 @@ class DataHandler:
 	        white_mask = cv2.inRange(hsv_roi, white_lower, white_upper)
 	
 	        # Check the center pixel of the ROI in the white mask
-	        center_y = roi_height // 2
+	        center_y = roi_height // 4
 	        center_x = roi_width // 2
 	        b, g, r = white_mask[center_y, center_x], white_mask[center_y, center_x], white_mask[center_y, center_x]
 	        
@@ -176,11 +175,11 @@ class DataHandler:
 
 
     def process_sensor_data(self, Water_Level, Disappearance_Height):
-        num_iterations = 5
+        num_iterations = 10
         ph_values = []
         temp_values = []
         ec_values = []
-        #### 5 iterations to get the average value of each sensor in case of absence of certain sensor value
+        #### 10 iterations to get the average value of each sensor in case of absence of certain sensor value
         print('Collecting data...')
         for _ in range(num_iterations):
             while True:
@@ -197,6 +196,13 @@ class DataHandler:
         avg_ph = np.mean(ph_values)
         avg_temp = np.mean(temp_values)
         avg_ec = np.mean(ec_values)
+        
+        avg_ph = round(avg_ph, 2) 
+        avg_temp = round(avg_temp, 2) 
+        avg_ec = round(avg_ec, 2) 
+        Water_Level = round(Water_Level, 2) 
+        Disappearance_Height = round(Disappearance_Height, 2)
+
 
 
         print(f'Average pH: {avg_ph}, Average Temperature: {avg_temp}, Average EC: {avg_ec}')
@@ -236,7 +242,7 @@ class DataHandler:
 
 
     def generate_json(self, user_input):
-        application_prompt = """Make sure that all responses are in json format and the values are float .2f
+        application_prompt = """Make sure that all responses are in json format and the values are float
         DESCRIPTION:
         {user_input}
         """
@@ -269,12 +275,9 @@ class DataHandler:
         transparency_values = data.get('transparency_prediction', 0)
        
         #####control actuators###########
+        print(ph_values,ec_values,temp_values,transparency_values)
        
         GPIO.cleanup()
-
-
-
-
 
 
 while True:
